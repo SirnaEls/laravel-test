@@ -74,6 +74,29 @@
                                         </div>
                                     </div>
                                 </fieldset>
+                                <fieldset class="clearfix">
+                                    <label><span>Format de l'étiquette</span></label>
+                                    <div class="field_wrap admin_selectWrap clearfix">
+                                        <div class="field_border border_left">
+                                            <select name="label" class="admin_select">
+                                                <option value="DLC" {{ old('label', $basket->label) == 'DLC' ? 'selected' : '' }}>DLC</option>
+                                                <option value="Vente libre service" {{ old('label', $basket->label) == 'Vente libre service' ? 'selected' : '' }}>Vente libre service</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                
+                                <fieldset class="clearfix" id="subLabelFieldset" style="{{ old('label', $basket->label) == 'Vente libre service' ? '' : 'display:none;' }}">
+                                    <label><span>Sous-format de l'étiquette</span></label>
+                                    <div class="field_wrap admin_selectWrap clearfix">
+                                        <div class="field_border border_left">
+                                            <select name="sub_label" class="admin_select">
+                                                <option value="Simple" {{ old('sub_label', $basket->sub_label) == 'Simple' ? 'selected' : '' }}>Simple</option>
+                                                <option value="Complet" {{ old('sub_label', $basket->sub_label) == 'Complet' ? 'selected' : '' }}>Complet</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </fieldset>
                             @endif
                             <fieldset class="clearfix">
                                 <label><span>Couleur</span></label>
@@ -132,8 +155,10 @@
         $(document).ready(function(){
             $('.custom_checkbox').ezMark();
 
+            // l'erreur se trouve ici, car nous étions sur un closest(form) et il allait donc chercher tout le form et changer la valeur des deux inputs.
+            // en passant le closest en fieldset, on tape dans fieldset et non dans tout le form ce qui évite de modifier la valeur des deux inputs à la fois.
             $('.custom_checkbox').change(function(){
-                $(this).closest('form').find('input:hidden').val($(this).is(':checked') ? 1 : 0);
+                $(this).closest('fieldset').find('input:hidden').val($(this).is(':checked') ? 1 : 0);
             });
 
             $("#dlcBasketForm").validate({
@@ -229,6 +254,14 @@
                 $("#dlcBasketForm button").addClass('inactive');
                 $("#dlcBasketForm button").removeClass('active');
             }
+            // Gérer l'affichage du champ sub_label en fonction du choix de label
+        $('select[name="label"]').change(function(){
+            if ($(this).val() == 'Vente libre service') {
+                $('#subLabelFieldset').show();
+            } else {
+                $('#subLabelFieldset').hide();
+            }
+        });        
         });
     </script>
 @stop

@@ -15,7 +15,7 @@ class DlcBasket extends OctopusBaseModel
 {
     use SoftDeletes;
     protected $table = 'dlc_basket';
-    protected $fillable = ['name', 'icon', 'color', 'active', 'print_label', 'print_format', 'show_images', 'print_minutes'];
+    protected $fillable = ['name', 'icon', 'color', 'active', 'print_label', 'print_format', 'show_images', 'print_minutes','label','sub_label'];
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
     protected $_validation_rules = [
@@ -58,6 +58,9 @@ class DlcBasket extends OctopusBaseModel
         }
         if(!isset($attributes['print_format'])) {
             $attributes['print_format'] = 'default';
+        }
+        if(!isset($attributes['label'])) {
+            $attributes['label'] = 'DLC';
         }
         
         parent::__construct($attributes);

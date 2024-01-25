@@ -132,8 +132,10 @@
         $(document).ready(function(){
             $('.custom_checkbox').ezMark();
 
+            // l'erreur se trouve ici, car nous étions sur un closest(form) et il allait donc chercher tout le form et changer la valeur des deux inputs.
+            // en passant le closest en fieldset, on tape dans fieldset et non dans tout le form ce qui évite de modifier la valeur des deux inputs à la fois.
             $('.custom_checkbox').change(function(){
-                $(this).closest('form').find('input:hidden').val($(this).is(':checked') ? 1 : 0);
+                $(this).closest('fieldset').find('input:hidden').val($(this).is(':checked') ? 1 : 0);
             });
 
             $("#dlcBasketForm").validate({

@@ -74,6 +74,29 @@
                                         </div>
                                     </div>
                                 </fieldset>
+                                <fieldset class="clearfix">
+                                    <label><span>Format de l'étiquette</span></label>
+                                    <div class="field_wrap admin_selectWrap clearfix">
+                                        <div class="field_border border_left">
+                                            <select name="label" class="admin_select">
+                                                <option value="DLC" {{ old('label', $basket->label) == 'DLC' ? 'selected' : '' }}>DLC</option>
+                                                <option value="Vente libre service" {{ old('label', $basket->label) == 'Vente libre service' ? 'selected' : '' }}>Vente libre service</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                
+                                <fieldset class="clearfix" id="subLabelFieldset" style="{{ old('label', $basket->label) == 'Vente libre service' ? '' : 'display:none;' }}">
+                                    <label><span>Sous-format de l'étiquette</span></label>
+                                    <div class="field_wrap admin_selectWrap clearfix">
+                                        <div class="field_border border_left">
+                                            <select name="sub_label" class="admin_select">
+                                                <option value="Simple" {{ old('sub_label', $basket->sub_label) == 'Simple' ? 'selected' : '' }}>Simple</option>
+                                                <option value="Complet" {{ old('sub_label', $basket->sub_label) == 'Complet' ? 'selected' : '' }}>Complet</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </fieldset>
                             @endif
                             <fieldset class="clearfix">
                                 <label><span>Couleur</span></label>
@@ -231,6 +254,14 @@
                 $("#dlcBasketForm button").addClass('inactive');
                 $("#dlcBasketForm button").removeClass('active');
             }
+            // Gérer l'affichage du champ sub_label en fonction du choix de label
+        $('select[name="label"]').change(function(){
+            if ($(this).val() == 'Vente libre service') {
+                $('#subLabelFieldset').show();
+            } else {
+                $('#subLabelFieldset').hide();
+            }
+        });        
         });
     </script>
 @stop
